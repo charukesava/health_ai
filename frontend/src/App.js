@@ -13,6 +13,8 @@ import HealthChat from "./pages/HealthChat";
 import Emergency from "./pages/Emergency";
 import NearbyFinder from "./pages/NearbyFinder";
 import Appointment from "./pages/Appointment";
+import MyAppointment from "./pages/MyAppointment";
+import HospitalAppointment from "./pages/HospitalAppointment";
 import AdminUpdates from "./pages/AdminUpdates";
 
 import Navbar from "./components/Navbar";
@@ -73,6 +75,22 @@ function AppRoutes() {
             <ProtectedRoute>
               <Appointment />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-appointments"
+          element={
+            <ProtectedRoute>
+              <MyAppointment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hospital-appointments"
+          element={
+            <AdminRoute>
+              <HospitalAppointment />
+            </AdminRoute>
           }
         />
         <Route path="/map" element={<Map />} />

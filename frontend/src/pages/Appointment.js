@@ -1,8 +1,10 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export default function Appointment() {
   const { state } = useLocation();
+  const { user } = useAuth();
   const hospital = state?.hospital;
 
   const [formData, setFormData] = useState({
@@ -17,6 +19,8 @@ export default function Appointment() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   if (!hospital) {
     return (
@@ -41,19 +45,46 @@ export default function Appointment() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    if (!user) {
+      setError("Please log in to book an appointment");
+      setLoading(false);
+      return;
+    }
 
     const payload = {
+      userId: user.uid,
       hospitalName: hospital.name,
-      hospitalType: hospital.type,
-      ...formData,
-      createdAt: new Date().toISOString(),
+      department: formData.department,
+      date: formData.date,
+      time: formData.time,
+      patientName: formData.patientName,
+      notes: formData.symptoms,
     };
 
-    // Simulated hospital acceptance
-    console.log("Appointment sent to hospital:", payload);
-    setSubmitted(true);
+    try {
+      const response = await fetch("http://localhost:5000/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to book appointment");
+      }
+
+      const result = await response.json();
+      console.log("Appointment booked:", result);
+      setSubmitted(true);
+      setLoading(false);
+    } catch (err) {
+      setError("Error booking appointment: " + err.message);
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,6 +98,8 @@ export default function Appointment() {
 
       {!submitted && (
         <form onSubmit={handleSubmit} style={{ maxWidth: 500 }}>
+          {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
+          
           <div style={{ marginBottom: 10 }}>
             <label>Patient Name</label>
             <input
@@ -74,6 +107,7 @@ export default function Appointment() {
               value={formData.patientName}
               onChange={handleChange}
               style={{ width: "100%", padding: 8 }}
+              required
             />
           </div>
 
@@ -166,7 +200,9 @@ export default function Appointment() {
             />
           </div>
 
-          <button type="submit">Submit Appointment Request</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Booking..." : "Submit Appointment Request"}
+          </button>
         </form>
       )}
 

@@ -6,6 +6,7 @@ const app = express();
 
 const analyzeRoutes = require("./routes/analyze");
 const imageAnalyzeRoutes = require("./routes/imageAnalyze");
+const appointmentsRoutes = require("./routes/appointments");
 const doctorsRoutes = require("./routes/doctors");
 const emergencyRoutes = require("./routes/emergency");
 const feedbackRoutes = require("./routes/feedback");
@@ -20,6 +21,7 @@ app.use("/api/ai", aiChat);
 
 app.use("/api/analyze", analyzeRoutes);
 app.use("/api/image-analyze", imageAnalyzeRoutes);
+app.use("/api/appointments", appointmentsRoutes);
 app.use("/api/doctors", doctorsRoutes);
 app.use("/api/emergency", emergencyRoutes);
 app.use("/api/feedback", feedbackRoutes);
