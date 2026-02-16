@@ -25,6 +25,13 @@ export default function Navbar() {
         <button onClick={() => navigate("/home")}>Home</button>
         <button onClick={() => navigate("/health-chat")}>Health Chat</button>
         <button onClick={() => navigate("/nearby")}>Nearby Finder</button>
+        <button onClick={() => navigate("/appointment")}>Appointments</button>
+        <button onClick={() => navigate("/my-appointments")}>My Appointments</button>
+        {isAdmin && (
+          <button onClick={() => navigate("/hospital-appointments")}>
+            Hospital Dashboard
+          </button>
+        )}
         <button onClick={() => navigate("/map")}>Map</button>
         <button className="danger" onClick={() => navigate("/emergency")}>
           Emergency

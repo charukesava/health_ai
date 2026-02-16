@@ -98,8 +98,10 @@ export default function Appointment() {
 
       {!submitted && (
         <form onSubmit={handleSubmit} style={{ maxWidth: 500 }}>
-          {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
-          
+          {error && (
+            <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>
+          )}
+
           <div style={{ marginBottom: 10 }}>
             <label>Patient Name</label>
             <input
