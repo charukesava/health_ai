@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/auth.css";
 
 export default function Signup() {
@@ -9,6 +9,7 @@ export default function Signup() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -16,59 +17,79 @@ export default function Signup() {
     e.preventDefault();
     setMessage("");
 
-    if (!email || !password) {
+    if (!email || !password || !confirmPassword) {
       setMessage("❌ Please fill in all fields.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setMessage("❌ Passwords do not match.");
       return;
     }
 
     try {
       await signup(email, password);
       setMessage("✅ Signup successful. Please verify your email.");
-      navigate("/"); // go back to login
+      setTimeout(() => navigate("/"), 2000);
     } catch (err) {
       setMessage("❌ " + (err.message || "Signup failed."));
     }
   };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h1>Create account</h1>
+    <div className="auth-box">
+      <h2>Create Account</h2>
 
-        <div className="field">
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+      {message && (
+        <p
+          style={{
+            marginBottom: "10px",
+            color: message.includes("✅") ? "#5cb85c" : "#d9534f",
+          }}
+        >
+          {message}
+        </p>
+      )}
 
-        <div className="field">
-          <label>Password</label>
-          <div style={{ display: "flex", gap: 8 }}>
-            <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{ flex: 1 }}
-            />
-            <button type="button" onClick={() => setShowPassword((v) => !v)}>
-              {showPassword ? "Hide" : "Show"}
-            </button>
-          </div>
-        </div>
+      <form onSubmit={handleSubmit}>
+        <input
+          placeholder="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-        {message && <p className="auth-message">{message}</p>}
+        <input
+          placeholder="Password"
+          type={showPassword ? "text" : "password"}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
-        <button type="submit" className="auth-submit">
-          Sign up
+        <input
+          placeholder="Confirm Password"
+          type={showPassword ? "text" : "password"}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+
+        <button
+          type="button"
+          onClick={() => setShowPassword((v) => !v)}
+          style={{ marginTop: "6px", marginBottom: "12px" }}
+        >
+          {showPassword ? "Hide" : "Show"} Password
         </button>
 
-        <p style={{ marginTop: 12 }}>
-          Already have an account? <Link to="/">Login</Link>
-        </p>
+        <button type="submit">Sign up</button>
       </form>
+
+      <p style={{ marginTop: "10px" }}>
+        Already have an account? <a href="/">Login</a>
+      </p>
     </div>
   );
 }
