@@ -1,0 +1,290 @@
+/* ===============================
+   GLOBAL RESET & BASE
+================================ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+body {
+  background-color: #f4f6f8;
+  color: #222;
+  line-height: 1.6;
+}
+
+/* ===============================
+   LAYOUT CONTAINER
+================================ */
+
+.page {
+  max-width: 900px;
+  margin: 30px auto;
+  background: #ffffff;
+  padding: 24px 32px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   HEADINGS
+================================ */
+
+h1,
+h2,
+h3 {
+  margin-bottom: 16px;
+  color: #1f2937;
+}
+
+h2 {
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 6px;
+}
+
+/* ===============================
+   NAVBAR
+================================ */
+
+nav {
+  background-color: #1e3a8a;
+  padding: 12px 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+nav button {
+  background: #ffffff;
+  color: #1e3a8a;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+nav button:hover {
+  background-color: #e0e7ff;
+}
+
+/* ===============================
+   FORM ELEMENTS
+================================ */
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 10px 0 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+
+button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+/* ===============================
+   AUTH (LOGIN / SIGNUP)
+================================ */
+
+.auth-page {
+  max-width: 420px;
+  margin: 60px auto;
+  background: #ffffff;
+  padding: 30px 32px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-switch {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+.google-btn {
+  width: 100%;
+  margin-top: 10px;
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.google-btn:hover {
+  background: #f9fafb;
+}
+
+/* ===============================
+   FEEDBACK PAGE
+================================ */
+
+.feedback-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+  min-height: 100vh;
+}
+
+.feedback-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 700px;
+  padding: 28px 32px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.feedback-summary {
+  margin-top: 25px;
+  padding-left: 12px;
+  border-left: 4px solid #2563eb;
+}
+
+.feedback-summary ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 12px;
+}
+
+.feedback-summary li {
+  background: #f9fafb;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.feedback-summary strong {
+  color: #f59e0b;
+}
+
+/* Star Rating */
+.star-rating {
+  font-size: 28px;
+  margin: 10px 0;
+}
+
+.star {
+  cursor: pointer;
+  color: #cbd5e1;
+  margin-right: 5px;
+}
+
+.star.active,
+.star:hover {
+  color: #f4b400;
+}
+
+/* Feedback row */
+.feedback-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Delete button (Admin) */
+.delete-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #dc2626;
+}
+
+.delete-btn:hover {
+  transform: scale(1.1);
+}
+
+/* ===============================
+   CARDS / RESULTS
+================================ */
+
+.card {
+  padding: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background-color: #fafafa;
+}
+
+/* ===============================
+   TEXT / DISCLAIMER
+================================ */
+
+.disclaimer {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #64748b;
+  font-style: italic;
+}
+/* PASSWORD FIELD */
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 50px;
+}
+
+.toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-45%);
+  background: none;
+  border: none;
+  color: #2564ebbe;
+  font-weight: 600;
+  cursor: pointer;
+}

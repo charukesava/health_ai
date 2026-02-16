@@ -1,0 +1,14 @@
+{
+  "appTitle": "AI Health Assistant",
+  "welcome": "Welcome to AI Health Assistant",
+  "login": "Login",
+  "name": "Name",
+  "phone": "Phone Number",
+  "symptomPlaceholder": "Describe your symptoms",
+  "analyze": "Analyze",
+  "imageAnalyze": "Analyze Image",
+  "possibleCondition": "Possible Condition",
+  "firstAid": "First Aid Advice",
+  "consultDoctor": "When to Consult a Doctor",
+  "disclaimer": "This application is for educational purposes only and not a medical diagnosis."
+}
