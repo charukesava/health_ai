@@ -4,6 +4,7 @@ const { verifyToken, verifyAdmin } = require("../middleware/auth");
 const { auditLog, logDataAccess } = require("../middleware/auditLog");
 const { encryptFields, decryptFields } = require("../utils/encryption");
 const rateLimit = require("express-rate-limit");
+const { ADMIN_EMAILS_SET } = require("../config/adminConfig");
 
 // ─── Validation Regexes ───────────────────────────────────────────────────
 const VALIDATION = {
@@ -169,7 +170,10 @@ router.post("/", appointmentLimiter, (req, res) => {
 
     // 📤 Decrypt before sending to client (for confirmation display)
     const fieldsToReturn = ["patientName", "phone", "notes"];
-    const responseAppointment = decryptFields(encryptedAppointment, fieldsToReturn);
+    const responseAppointment = decryptFields(
+      encryptedAppointment,
+      fieldsToReturn,
+    );
 
     res.status(201).json(responseAppointment);
   } catch (err) {
@@ -244,7 +248,7 @@ router.get("/", verifyToken, verifyAdmin, (req, res) => {
     // Map preserves insertion order; sort descending by createdAt
     const all = [...appointmentsMap.values()]
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .map(apt => {
+      .map((apt) => {
         // 🔓 DECRYPT sensitive fields for admin viewing
         const fieldsToDecrypt = ["patientName", "phone", "notes"];
         return decryptFields(apt, fieldsToDecrypt);
@@ -324,15 +328,16 @@ router.put("/:id/status", verifyToken, verifyAdmin, (req, res) => {
     if (!appointment)
       return res.status(404).json({ error: "Appointment not found" });
 
+    const oldStatus = appointment.status;
+
     appointment.status = status;
     appointment.adminNotes = adminNotes || appointment.adminNotes;
     appointment.updatedAt = new Date().toISOString();
 
-    // 📝 LOG admin action for audit trail
-    auditLog(`APPOINTMENT_STATUS_UPDATED`, "INFO", {
+    auditLog("APPOINTMENT_STATUS_UPDATED", "INFO", {
       appointmentId: id,
       adminId: req.uid,
-      oldStatus: appointment.status,
+      oldStatus,
       newStatus: status,
       timestamp: new Date().toISOString(),
     });
@@ -410,7 +415,11 @@ router.get("/:id", (req, res) => {
     const appointment = appointmentsMap.get(parseInt(req.params.id));
     if (!appointment)
       return res.status(404).json({ error: "Appointment not found" });
-    res.json(appointment);
+    const fieldsToDecrypt = ["patientName", "phone", "notes"];
+
+    const responseAppointment = decryptFields(appointment, fieldsToDecrypt);
+
+    res.json(responseAppointment);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch appointment" });

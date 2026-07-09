@@ -35,7 +35,12 @@ export default function Appointment() {
         const response = await fetch(`${BASE_URL}/api/hospitals`);
         if (response.ok) {
           const data = await response.json();
-          setHospitals(data);
+          if (Array.isArray(data)) {
+            setHospitals(data);
+          } else {
+            console.error("Unexpected hospitals response:", data);
+            setHospitals([]);
+          }
         } else {
           console.error("Failed to fetch hospitals");
         }
@@ -86,6 +91,11 @@ export default function Appointment() {
       setLoading(false);
       return;
     }
+    if (!hospital) {
+      setError("Please select a hospital.");
+      setLoading(false);
+      return;
+    }
 
     const payload = {
       userId: user.uid,
@@ -106,11 +116,14 @@ export default function Appointment() {
         body: JSON.stringify(payload),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to book appointment");
+        throw new Error(
+          result.error || result.message || "Failed to book appointment",
+        );
       }
 
-      const result = await response.json();
       console.log("Appointment booked:", result);
       setSubmitted(true);
       setLoading(false);
